@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import axios from "axios";
 import { Button, Modal, Input } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
 // import {
 //   DeleteOutlined
 // } from "@ant-design/icons";
@@ -46,14 +47,14 @@ const Productmahsu = () => {
     }
   };
 
-  // const deleteData = async (id) => {
-  //   try {
-  //     await axios.delete(` /item-types/${id}`);
-  //     fetchData(); // Fetch data again after deletion to update the list
-  //   } catch (error) {
-  //     console.error("Error deleting data:", error);
-  //   }
-  // };
+  const deleteData = async (id) => {
+    try {
+      await axios.delete(`/item-types/${id}`);
+      fetchData(); // Fetch data again after deletion to update the list
+    } catch (error) {
+      console.error("Error deleting data:", error);
+    }
+  };
 
   return (
     <div>
@@ -88,7 +89,13 @@ const Productmahsu = () => {
             <div className="p-4 leading-normal">
               <h5 className=" flex justify-between mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                 <span>{item.name}</span>
-                {/* <Button type="primary" danger onClick={() => deleteData(item.id)}><DeleteOutlined /></Button> */}
+                <Button
+                  type="primary"
+                  danger
+                  onClick={() => deleteData(item.id)}
+                >
+                  <DeleteOutlined />
+                </Button>
               </h5>
             </div>
           </a>

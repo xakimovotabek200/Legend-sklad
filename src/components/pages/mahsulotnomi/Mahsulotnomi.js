@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from "react";
 
+import { Button, Form, Input, Modal } from "antd";
 import axios from "axios";
-import { Button, Modal, Input, Form } from "antd";
-import { DeleteOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-
-// import {
-//   DeleteOutlined
-// } from "@ant-design/icons";
 
 const Mahsulotnomi = () => {
   const [data, setData] = useState([]);
@@ -48,15 +43,6 @@ const Mahsulotnomi = () => {
     }
   };
 
-  const deleteData = async (id) => {
-    try {
-      await axios.delete(`/material-types/${id}`);
-      fetchData();
-    } catch (error) {
-      console.error("Error deleting data:", error);
-    }
-  };
-
   return (
     <div>
       <div className="flex justify-between">
@@ -66,16 +52,8 @@ const Mahsulotnomi = () => {
           className="bg-blue-700"
           onClick={showModal}
         >
-          Qo'shish
+          + Qo'shish
         </Button>
-        {/* <Button
-        type="danger"
-        size="large"
-        className="bg-red-700 text-white"
-        
-      >
-        O'chirish
-      </Button> */}
       </div>
       <Modal
         title="Add New Item"
@@ -102,7 +80,7 @@ const Mahsulotnomi = () => {
               },
             ]}
           >
-            <Input />
+            <Input placeholder="Maxsulot nomini kriting" />
           </Form.Item>
         </Form>
       </Modal>

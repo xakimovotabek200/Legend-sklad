@@ -14,8 +14,8 @@ const Addtablem = () => {
   const myId = sessionStorage.getItem("myId");
   const [nomiId, setNomiId] = useState(null);
   const [miqdori, setMiqdori] = useState("");
+  const [UserIdGet, setUserIdGet] = useState(null);
   const [description, setDescription] = useState("");
-
   const [searchValue, setSearchValue] = useState("");
   const { Search } = Input;
   const [qidir, setQidir] = useState([]);
@@ -31,13 +31,13 @@ const Addtablem = () => {
     description: description,
     quantity: parseInt(miqdori),
     adminId: parseInt(myId),
-    categoryId: parseInt(id),
+    materialCategoryId: parseInt(id),
   };
 
   // olish madalini ozgaruvchilari
   const deleteData = {
     materialTypeId: issModalOpen?.id,
-    categoryId: parseInt(id),
+    materialCategoryId: parseInt(id),
     description: description,
     quantity: parseInt(oquan),
     adminId: parseInt(myId),
@@ -70,9 +70,6 @@ const Addtablem = () => {
     try {
       const response = await axios.get(`/materials/search?name=${inputValue}`);
       setQidir(response.data?.data);
-      // setMaterial(response.data);
-
-      // console.log(response.data?.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -86,7 +83,6 @@ const Addtablem = () => {
     try {
       const response = await axios.get(`/materials/category/${id}`);
       setData(response.data.data);
-      // console.log(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -101,13 +97,25 @@ const Addtablem = () => {
       try {
         const response = await axios.get(`/material-types`);
         setNomi(response.data.data);
-        // console.log(data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     productData();
+  }, []);
+
+  useEffect(() => {
+    const getUserId = async () => {
+      try {
+        const response = await axios.get(`/users`);
+        setUserIdGet(response.data);
+      } catch (error) {
+        toast.error("Error fetching data:", error);
+      }
+    };
+
+    getUserId();
   }, []);
 
   const columns = [
@@ -122,8 +130,13 @@ const Addtablem = () => {
       dataIndex: "name",
       key: "name",
       render: (item, row) => {
-        // console.log(row);
-        return <span>{row?.materialType?.name}</span>;
+        return (
+          <span>
+            {nomi?.map?.(
+              (item) => item.id === row?.materialTypeId && item.name
+            )}
+          </span>
+        );
       },
     },
     {
@@ -131,7 +144,13 @@ const Addtablem = () => {
       dataIndex: "admin",
       key: "admin",
       render: (item, row) => {
-        return <span>{row?.userDto?.username}</span>;
+        return (
+          <span>
+            {UserIdGet?.map?.(
+              (item) => item.id === row?.userId && item.username
+            )}
+          </span>
+        );
       },
     },
     {
@@ -209,7 +228,7 @@ const Addtablem = () => {
   // item ochirish uchun yozilgan funksiya
   async function ochir() {
     await axios
-      .delete("/material", deleteData)
+      .patch("/materials", deleteData)
       .then((response) => {
         fetchData();
       })
@@ -237,7 +256,7 @@ const Addtablem = () => {
           Qo'shish
         </Button>
         <Modal
-          title="Basic Modal"
+          title="Maxsulot Yaratish"
           open={isModalOpen}
           onOk={handleOk}
           okButtonProps={{ className: "bg-blue-500" }}
@@ -258,6 +277,7 @@ const Addtablem = () => {
                 );
               })}
             </Select>
+
             <Input
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Description"

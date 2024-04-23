@@ -1,6 +1,5 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-
 import AddProducts from "../AddProducts/AddProducts";
 import Addtablep from "../AddProducts/Addtablep";
 import AddMaterials from "../addmaterials/AddMaterials";
@@ -27,7 +26,7 @@ function Pagess() {
           <Route path="/product" element={<Products />} />
           <Route path="/materials" element={<Materials />} />
           <Route path="/addmaterials" element={<AddMaterials />} />
-          <Route path="addproducts" element={<AddProducts />} />
+          <Route path="/addproducts" element={<AddProducts />} />
           <Route path="/mahsulotnomi" element={<Mahsulotnomi />} />
           <Route path="/productmahsulot" element={<Productmahsu />} />
           <Route path="/items/:id" element={<ItemsPage />} />

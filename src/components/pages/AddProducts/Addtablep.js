@@ -90,7 +90,6 @@ const Addtablep = () => {
     try {
       const response = await axios.get(`/item/category/${id}`);
       setData(response.data.data);
-      // console.log(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -101,7 +100,7 @@ const Addtablep = () => {
 
   const columns = [
     {
-      title: "N0 ",
+      title: "#",
       dataIndex: "id",
       key: "id",
       render: (text) => <a>{text}</a>,
@@ -295,11 +294,6 @@ const Addtablep = () => {
         </Modal>
 
         {/* olishni modali bu passdagi */}
-        {/* <Modal title="Basic Modal" open={issModalOpen} onOk={qolOk} onCancel={qolCancel}>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-      </Modal> */}
       </div>
       <Table
         className="mt-5"

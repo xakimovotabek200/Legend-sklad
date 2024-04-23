@@ -44,22 +44,22 @@ function Sidebar() {
         {
           key: "addmaterials",
           icon: <FileAddOutlined />,
-          label: "AddMaterials",
+          label: "Materials",
         },
         {
           key: "mahsulotnomi",
           icon: <PlusOutlined />,
-          label: "Mahsulot",
+          label: "Mahsulot Turi",
         },
         {
           key: "addproducts",
           icon: <FolderAddOutlined />,
-          label: "AddProducts",
+          label: "AddProducts Category",
         },
         {
           key: "productmahsulot",
           icon: <PlusOutlined />,
-          label: "Productmahsu",
+          label: "Product item-type",
         },
       ],
     },

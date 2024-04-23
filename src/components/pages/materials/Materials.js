@@ -1,32 +1,61 @@
-import React, { useEffect, useState } from "react";
-import { Space, Table, Tag } from "antd";
+import { Table } from "antd";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const Materials = () => {
   const [material, setMaterial] = useState([]);
+  const [materialName, setMaterialName] = useState([]);
+
+  const getStatus = (status) => {
+    if (status === "added") {
+      return (
+        <div className="border-4 border-green-500 text-center rounded-full px-3 py-[1px]">
+          Qo'shildi
+        </div>
+      );
+    } else if (status === "subtracted") {
+      return (
+        <div className="border-4 border-red-500 text-center rounded-full px-3 py-[1px]">
+          Ayrildi
+        </div>
+      );
+    } else {
+      return null;
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("/material-transactions"); // Replace YOUR_BASE_URL with the appropriate URL
+        const response = await axios.get("/material-transactions");
         setMaterial(response.data.data);
-        // console.log(response.data.data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching data:");
       }
     };
-
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchDataName = async () => {
+      try {
+        const response = await axios.get("/material-types");
+        setMaterialName(response.data.data);
+      } catch (error) {
+        toast.error("Error fetching data:");
+      }
+    };
+    fetchDataName();
   }, []);
 
   const columns = [
     {
-      title: "Category",
-      dataIndex: "category",
-      key: "category",
+      title: "CategoryId",
+      dataIndex: "categoryId",
+      key: "categoryId",
       render: (item, row) => {
-        // console.log(row);
-        return <span>{row?.category?.name}</span>;
+        return <p className="pl-2">{row?.categoryId}</p>;
       },
     },
     {
@@ -34,9 +63,34 @@ const Materials = () => {
       dataIndex: "materialType",
       key: "materialType",
       render: (item, row) => {
-        // console.log(row);
-        return <span>{row?.materialType?.name}</span>;
+        console.log(row);
+        return (
+          <span>
+            {materialName?.map?.(
+              (item) => item.id === row?.materialTypeId && item.name
+            )}
+          </span>
+        );
       },
+    },
+    {
+      title: "Admin",
+      dataIndex: "userDto",
+      key: "userDto",
+      render: (item, row) => {
+        return <span>{row?.userId}</span>;
+      },
+    },
+    {
+      title: "Miqdori",
+      key: "quantity",
+      dataIndex: "quantity",
+    },
+    {
+      title: "Holati",
+      key: "holati",
+      dataIndex: "actionType",
+      render: (status) => getStatus(status),
     },
     {
       title: "Sanasi",
@@ -50,28 +104,16 @@ const Materials = () => {
         );
       },
     },
-    {
-      title: "Admin",
-      dataIndex: "userDto",
-      key: "userDto",
-      render: (item, row) => {
-        // console.log(row);
-        return <span>{row?.userDto?.username}</span>;
-      },
-    },
-    {
-      title: "Holati",
-      key: "holati",
-      dataIndex: "actionType",
-    },
-    {
-      title: "Miqdori",
-      key: "quantity",
-      dataIndex: "quantity",
-    },
   ];
 
-  return <Table columns={columns} dataSource={material} pagination={false} />;
+  return (
+    <Table
+      columns={columns}
+      dataSource={material}
+      pagination={false}
+      rowKey="id"
+    />
+  );
 };
 
 export default Materials;
